@@ -1,13 +1,14 @@
 import os
 import math
-
+import os
+import gdown
 
 class Config():
     def __init__(self) -> None:
         # PATH settings
         # Make up your file system as: SYS_HOME_DIR/codes/dis/BiRefNet, SYS_HOME_DIR/datasets/dis/xx, SYS_HOME_DIR/weights/xx
-        self.sys_home_dir = [os.path.expanduser('~'), '/mnt/data'][0]   # Default, custom
-        self.data_root_dir = os.path.join(self.sys_home_dir, 'datasets/dis')
+        self.sys_home_dir = '/workspace/'  # Default, custom
+        self.data_root_dir = '/workspace/' 
 
         # TASK settings
         self.task = ['DIS5K', 'COD', 'HRSOD', 'General', 'General-2K', 'Matting'][0]
@@ -34,7 +35,7 @@ class Config():
 
         # Faster-Training settings
         self.load_all = False   # Turn it on/off by your case. It may consume a lot of CPU memory. And for multi-GPU (N), it would cost N times the CPU memory to load the data.
-        self.compile = True                             # 1. Trigger CPU memory leak in some extend, which is an inherent problem of PyTorch.
+        self.compile = False                             # 1. Trigger CPU memory leak in some extend, which is an inherent problem of PyTorch.
                                                         #   Machines with > 70GB CPU memory can run the whole training on DIS5K with default setting.
                                                         # 2. Higher PyTorch version may fix it: https://github.com/pytorch/pytorch/issues/119607.
                                                         # 3. But compile in Pytorch > 2.0.1 seems to bring no acceleration for training.
@@ -52,7 +53,7 @@ class Config():
         self.dec_blk = ['BasicDecBlk', 'ResBlk'][0]
 
         # TRAINING settings
-        self.batch_size = 4
+        self.batch_size = 2
         self.finetune_last_epochs = [
             0,
             {
@@ -75,7 +76,7 @@ class Config():
             'swin_v1_b', 'swin_v1_l',               # 5-bs9, 6-bs4
             'pvt_v2_b0', 'pvt_v2_b1',               # 7, 8
             'pvt_v2_b2', 'pvt_v2_b5',               # 9-bs10, 10-bs5
-        ][6]
+        ][3]
         self.lateral_channels_in_collection = {
             'vgg16': [512, 256, 128, 64], 'vgg16bn': [512, 256, 128, 64], 'resnet50': [1024, 512, 256, 64],
             'pvt_v2_b2': [512, 320, 128, 64], 'pvt_v2_b5': [512, 320, 128, 64],
@@ -152,6 +153,7 @@ class Config():
         self.lambdas_cls = {
             'ce': 5.0
         }
+
 
         # PATH settings - inactive
         self.weights_root_dir = os.path.join(self.sys_home_dir, 'weights/cv')

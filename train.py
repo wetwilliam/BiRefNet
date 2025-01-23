@@ -36,6 +36,37 @@ if args.use_accelerate:
             utils.GradScalerKwargs(backoff_factor=0.5)],
     )
     args.dist = False
+# download weighting if needed
+
+import os
+import gdown
+
+# 定義資料夾路徑
+w_folder_path = "/workspace/weights/cv"
+
+# 建立資料夾（如果不存在）
+if not os.path.exists(w_folder_path):
+    os.makedirs(w_folder_path)
+    print(f"資料夾 '{w_folder_path}' 已建立。")
+else:
+    print(f"資料夾 '{w_folder_path}' 已存在。")
+
+# 定義權重檔案路徑
+weight_file_path = os.path.join(w_folder_path, "swin_tiny_patch4_window7_224_22kto1k_finetune.pth")
+
+# 檢查權重檔案是否存在，若不存在則下載
+if not os.path.exists(weight_file_path):
+    # Google Drive 檔案連結
+    file_url = "https://drive.google.com/uc?id=1o3n2kgHVEcrYucBNPlvxA9rNggCowKY7"
+    
+    # 下載檔案
+    gdown.download(file_url, weight_file_path, quiet=False)
+    print(f"檔案已下載至 {weight_file_path}")
+else:
+    print(f"檔案 '{weight_file_path}' 已存在，無需下載。")
+
+ 
+
 
 config = Config()
 if config.rand_seed:
