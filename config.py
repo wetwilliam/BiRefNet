@@ -53,7 +53,7 @@ class Config():
         self.dec_blk = ['BasicDecBlk', 'ResBlk'][0]
 
         # TRAINING settings
-        self.batch_size = 2
+        self.batch_size = 3 # for 4090
         self.finetune_last_epochs = [
             0,
             {
